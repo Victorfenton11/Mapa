@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Mapa",
-      home: Discover(),
+      home: HomePage(),
     );
   }
 }

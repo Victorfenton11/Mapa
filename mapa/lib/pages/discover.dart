@@ -9,17 +9,17 @@ class Discover extends StatefulWidget {
 }
 
 class _DiscoverState extends State<Discover> {
-  final List<String> images = [
-    'assets/image1.jpg',
-    'assets/image2.jpg',
-    'assets/image3.jpg',
-    'assets/image4.jpg',
-    'assets/image5.jpg',
-    'assets/image6.jpg',
-    'assets/image7.jpg',
-    'assets/image8.jpg',
-    'assets/image9.jpg',
-    'assets/image10.jpg',
+  final List<Map<String, String>> images = [
+    {'image': 'assets/image1.jpg', 'label': 'image 1'},
+    {'image': 'assets/image2.jpg', 'label': 'image 2'},
+    {'image': 'assets/image3.jpg', 'label': 'image 3'},
+    {'image': 'assets/image4.jpg', 'label': 'image 4'},
+    {'image': 'assets/image5.jpg', 'label': 'image 5'},
+    {'image': 'assets/image6.jpg', 'label': 'image 6'},
+    {'image': 'assets/image7.jpg', 'label': 'image 7'},
+    {'image': 'assets/image8.jpg', 'label': 'image 8'},
+    {'image': 'assets/image9.jpg', 'label': 'image 9'},
+    {'image': 'assets/image10.jpg', 'label': 'image 10'},
   ];
 
   @override
@@ -27,7 +27,7 @@ class _DiscoverState extends State<Discover> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(
-            top: 50.0, left: 20, right: 20), // Adjust this value as needed
+            top: 50.0, left: 20, right: 20),
         child: Column(
           children: [
             const Row(
@@ -110,7 +110,20 @@ class _DiscoverState extends State<Discover> {
 
             const SizedBox(height: 20),
             // Scrollable gallery of images here
-
+            Expanded(
+              child: ListView.builder(
+                itemCount: images.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: _buildImageCard(
+                      image: images[index]['image']!,
+                      label: images[index]['label']!,
+                    ),
+                  );
+                },
+              ),
+            ),
 
           ],
         ),
@@ -159,6 +172,48 @@ class _DiscoverState extends State<Discover> {
             ),
           )
         ],
+      ),
+    );
+  }
+
+  Widget _buildImageCard({
+    required String image,
+    required String label,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 10,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(15),
+        child: Column(
+          children: [
+            Image.asset(
+              image,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: 150,
+            ),
+            Container(
+              padding: const EdgeInsets.all(8),
+              color: Colors.transparent,
+              child: Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
