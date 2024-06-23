@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mapa/pages/homepage.dart';
-import 'package:typicons_flutter/typicons_flutter.dart';
 import 'package:mapa/pages/landing/landing.dart';
 
 void main() {

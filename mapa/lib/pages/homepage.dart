@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:mapa/pages/discover.dart';
 import 'package:mapa/pages/mapa.dart';
 import 'package:mapa/pages/profile.dart';
 import 'package:mapa/pages/travel.dart';
-import 'package:typicons_flutter/typicons_flutter.dart';
+import '../constants.dart' as constants;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -30,40 +30,83 @@ class _HomePageState extends State<HomePage> {
           _tabList.elementAt(_pageIndex),
           Align(
             alignment: Alignment(0.0, 1.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.all(
-                Radius.circular(25),
+            child: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(25),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(constants.GREY),
+                    spreadRadius: 1.0,
+                    blurRadius: 4.0,
+                    offset: Offset(0.0, -3.0),
+                  )
+                ]
               ),
-              child: BottomNavigationBar(
-                type: BottomNavigationBarType.fixed,
-                selectedItemColor: Color(0xFF91D670),
-                unselectedItemColor: Colors.black,
-                showSelectedLabels: false,
-                showUnselectedLabels: false,
-                backgroundColor: Colors.white,
-                onTap: (int index) {
-                  setState(() {
-                    _pageIndex = index;
-                  });
-                },
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Icon(Typicons.plane_outline),
-                    label: "Travel",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.public),
-                    label: "Discover",  
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.group_outlined),
-                    label: "Mapa",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(CupertinoIcons.map),
-                    label: "Profile"
-                  ),
-                ],
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(25),
+                ),
+                child: BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
+                  showSelectedLabels: true,
+                  showUnselectedLabels: true,
+                  selectedFontSize: 0,
+                  unselectedFontSize: 0,
+                  backgroundColor: Colors.white,
+                  onTap: (int index) {
+                    setState(() {
+                      _pageIndex = index;
+                    });
+                  },
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: SvgPicture.asset(
+                          "assets/plane.svg",
+                          height: 40,
+                          color: _pageIndex == 0? const Color(constants.GREEN) : Colors.black,
+                        ),
+                      ),
+                      label: "Travel",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: SvgPicture.asset(
+                          "assets/world.svg",
+                          height: 40,
+                          color: _pageIndex == 1? const Color(constants.GREEN) : Colors.black,
+                        ),
+                      ),
+                      label: "Discover",  
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: SvgPicture.asset(
+                          "assets/friends.svg",
+                          height: 40,
+                          color: _pageIndex == 2? const Color(constants.GREEN) : Colors.black,
+                        ),
+                      ),
+                      label: "Mapa",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: SvgPicture.asset(
+                          "assets/profile.svg",
+                          height: 50,
+                          color: _pageIndex == 3? const Color(constants.GREEN) : Colors.black,
+                        ),
+                      ),
+                      label: "Profile"
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
