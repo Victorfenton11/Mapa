@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:mapa/constants.dart' as constants;
 
 class Mapa extends StatefulWidget {
   const Mapa({super.key});
@@ -65,11 +66,14 @@ class _MapaState extends State<Mapa> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  "Mapa",
-                  style: TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.w500,
+                Padding(
+                  padding: EdgeInsets.only(top: 15.0),
+                  child: Text(
+                    "Mapa",
+                    style: TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ],
@@ -96,41 +100,56 @@ class _MapaState extends State<Mapa> {
               ),
             ),
             const SizedBox(height: 15),
-            ToggleSwitch(
-              inactiveBgColor: const Color.fromARGB(255, 227, 227, 227),
-              minWidth: 120.0,
-              cornerRadius: 20.0,
-              inactiveFgColor: Colors.white,
-              activeBgColor: const [Colors.white],
-              initialLabelIndex: 0,
-              doubleTapDisable: true, // re-tap active widget to de-activate
-              totalSwitches: 3,
-              labels: const ['Friends', 'Travelers', 'My Area'],
-              customTextStyles: const [
-                TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
+            Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(30),
                 ),
-                TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                ),
-                TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                ),
-              ],
-              onToggle: (index) {
-                print('switched to: $index');
-              },
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(constants.GREY),
+                    spreadRadius: 0.5,
+                    blurRadius: 1.0,
+                  )
+                ]
+              ),
+              child: ToggleSwitch(
+                inactiveBgColor: const Color.fromARGB(255, 227, 227, 227),
+                minWidth: 120.0,
+                cornerRadius: 20.0,
+                inactiveFgColor: Colors.white,
+                activeBgColor: const [Colors.white],
+                initialLabelIndex: 0,
+                doubleTapDisable: true, // re-tap active widget to de-activate
+                totalSwitches: 3,
+                labels: const ['Friends', 'Travelers', 'My Area'],
+                customTextStyles: const [
+                  TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ],
+                onToggle: (index) {
+                  print('switched to: $index');
+                },
+              ),
             ),
             const SizedBox(height: 15),
-            // Add sizedbox here
             Expanded(
               child: ListView.builder(
+                // TODO: Adding padding deletes space on top but then list surpasses bottom navbar
+                padding: const EdgeInsets.only(bottom: 35.0),
                 itemCount: posts.length,
                 itemBuilder: (context, index) {
                   final post = posts[index];
@@ -165,7 +184,7 @@ class _MapaState extends State<Mapa> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: LinearGradient(
-              colors: [Colors.lightBlue.shade200, Colors.lightBlue.shade400],
+              colors: [Color(constants.GREEN), Color(constants.LIGHT_BLUE)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),

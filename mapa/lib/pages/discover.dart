@@ -33,34 +33,37 @@ class _DiscoverState extends State<Discover> {
             const EdgeInsets.only(top: 50.0, left: 20, right: 20, bottom: 70.0),
         child: Column(
           children: [
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "Explore",
-                  style: TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.w500,
+            const Padding(
+              padding: EdgeInsets.only(top: 15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Explore",
+                    style: TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Chicago, IL",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                  Row(
+                    children: [
+                      Text(
+                        "Chicago, IL",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff826251),
+                        ),
+                      ),
+                      Icon(
+                        Icons.pin_drop_rounded,
                         color: Color(0xff826251),
                       ),
-                    ),
-                    Icon(
-                      Icons.pin_drop_rounded,
-                      color: Color(0xff826251),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 20),
             Row(
@@ -110,6 +113,8 @@ class _DiscoverState extends State<Discover> {
             // Scrollable gallery of images here
             Expanded(
               child: StaggeredGridView.countBuilder(
+                // TODO: why when we add padding bottom navbar is surpassed?
+                padding: const EdgeInsets.only(top: 10.0, bottom: 30.0),
                 crossAxisCount: 2,
                 itemCount: images.length,
                 itemBuilder: (BuildContext context, int index) =>
