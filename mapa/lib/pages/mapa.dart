@@ -54,6 +54,8 @@ class _MapaState extends State<Mapa> {
     },
   ];
 
+  int _selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,25 +104,24 @@ class _MapaState extends State<Mapa> {
             const SizedBox(height: 15),
             Container(
               decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(30),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(constants.GREY),
-                    spreadRadius: 0.5,
-                    blurRadius: 1.0,
-                  )
-                ]
-              ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(30),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(constants.GREY),
+                      spreadRadius: 0.5,
+                      blurRadius: 1.0,
+                    )
+                  ]),
               child: ToggleSwitch(
                 inactiveBgColor: const Color.fromARGB(255, 227, 227, 227),
                 minWidth: 120.0,
                 cornerRadius: 20.0,
                 inactiveFgColor: Colors.white,
                 activeBgColor: const [Colors.white],
-                initialLabelIndex: 0,
-                doubleTapDisable: true, // re-tap active widget to de-activate
+                initialLabelIndex: _selectedIndex,
+                doubleTapDisable: false, // re-tap active widget to de-activate
                 totalSwitches: 3,
                 labels: const ['Friends', 'Travelers', 'My Area'],
                 customTextStyles: const [
@@ -141,7 +142,11 @@ class _MapaState extends State<Mapa> {
                   ),
                 ],
                 onToggle: (index) {
-                  print('switched to: $index');
+                  if (index != null) {
+                    setState(() {
+                      _selectedIndex = index;
+                    });
+                  }
                 },
               ),
             ),
