@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:mapa/constants.dart' as constants;
@@ -69,8 +68,8 @@ class _ProfileState extends State<Profile> {
                                 ),
                               ],
                             ),
-                            Row(
-                              children: const [
+                            const Row(
+                              children: [
                                 Icon(Icons.home, size: 16),
                                 SizedBox(width: 5),
                                 Text(
@@ -132,8 +131,8 @@ class _ProfileState extends State<Profile> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
-                Row(
+                const SizedBox(height: 20),
+                const Row(
                   children: [
                     Text(
                       "My Badges",
@@ -144,7 +143,7 @@ class _ProfileState extends State<Profile> {
                     )
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Expanded(
                   child: ListView.builder(
                     itemCount: imageProfiles.length,
@@ -163,7 +162,7 @@ class _ProfileState extends State<Profile> {
             ),
           ),
           Positioned(
-            bottom: 95,
+            bottom: 120,
             left: 20,
             child: FloatingActionButton(
               onPressed: () {
@@ -172,12 +171,12 @@ class _ProfileState extends State<Profile> {
                   MaterialPageRoute(builder: (context) => const PostScreen()),
                 );
               },
+              backgroundColor: const Color(constants.GREEN),
               child: const Icon(
                 Icons.add,
                 color: Colors.black,
                 size: 24.0,
               ),
-              backgroundColor: Color(constants.GREEN),
             ),
           ),
         ],
@@ -191,7 +190,7 @@ class _ProfileState extends State<Profile> {
         Container(
           height: 70,
           width: 70,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             shape: BoxShape.circle,
             gradient: LinearGradient(
               colors: [Color(constants.GREEN), Color(constants.LIGHT_BLUE)],

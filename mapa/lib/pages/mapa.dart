@@ -10,17 +10,23 @@ class Mapa extends StatefulWidget {
 }
 
 class _MapaState extends State<Mapa> {
-  final List<Map<String, String>> imageProfiles = [
-    {'image': 'assets/image1.jpg', 'username': 'johndoe'},
-    {'image': 'assets/image2.jpg', 'username': 'janedoe'},
-    {'image': 'assets/image3.jpg', 'username': 'johnsmith'},
-    {'image': 'assets/image4.jpg', 'username': 'janesmith'},
-    {'image': 'assets/image5.jpg', 'username': 'johnsmith'},
-    {'image': 'assets/image6.jpg', 'username': 'janesmith'},
-    {'image': 'assets/image7.jpg', 'username': 'johnsmith'},
-    {'image': 'assets/image8.jpg', 'username': 'janesmith'},
-    {'image': 'assets/image9.jpg', 'username': 'johnsmith'},
-    {'image': 'assets/image10.jpg', 'username': 'janesmith'},
+  final List<Map<String, dynamic>> users = [
+    {
+      'username': 'johndoe',
+      'images': ['assets/image1.jpg', 'assets/image2.jpg'],
+    },
+    {
+      'username': 'janedoe',
+      'images': ['assets/image3.jpg', 'assets/image4.jpg'],
+    },
+    {
+      'username': 'johnsmith',
+      'images': ['assets/image5.jpg', 'assets/image6.jpg'],
+    },
+    {
+      'username': 'janesmith',
+      'images': ['assets/image7.jpg', 'assets/image8.jpg'],
+    },
   ];
 
   final List<Map<String, String>> posts = [
@@ -85,17 +91,22 @@ class _MapaState extends State<Mapa> {
               height: 100,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: imageProfiles.length,
+                itemCount: users.length,
                 itemBuilder: (context, index) {
-                  final profile = imageProfiles[index];
-                  final profileImage = profile['image'] ?? 'assets/default.jpg';
-                  final username = profile['username'] ?? 'unknown';
+                  final user = users[index];
+                  final profileImage = user['images'][0];
+                  final username = user['username'];
 
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: _buildStoryCircle(
-                      profileImage: profileImage,
-                      username: username,
+                    child: GestureDetector(
+                      onTap: () {
+                        _showImagePopup(users, index, 0);
+                      },
+                      child: _buildStoryCircle(
+                        profileImage: profileImage,
+                        username: username,
+                      ),
                     ),
                   );
                 },
@@ -153,7 +164,6 @@ class _MapaState extends State<Mapa> {
             const SizedBox(height: 15),
             Expanded(
               child: ListView.builder(
-                // TODO: Adding padding deletes space on top but then list surpasses bottom navbar
                 padding: const EdgeInsets.only(bottom: 35.0),
                 itemCount: posts.length,
                 itemBuilder: (context, index) {
@@ -177,6 +187,150 @@ class _MapaState extends State<Mapa> {
     );
   }
 
+  void _showImagePopup(List<Map<String, dynamic>> users, int initialUserIndex,
+      int initialImageIndex) {
+    int currentUserIndex = initialUserIndex;
+    int? currentImageIndex = initialImageIndex;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Dialog(
+              backgroundColor: Colors.transparent,
+              insetPadding: const EdgeInsets.all(0),
+              child: GestureDetector(
+                onVerticalDragEnd: (details) {
+                  if (details.primaryVelocity! > 0) {
+                    // Swipe down
+                    setState(() {
+                      currentUserIndex =
+                          (currentUserIndex - 1 + users.length) % users.length;
+                      currentImageIndex =
+                          0; // Reset image index when user changes
+                    });
+                  } else if (details.primaryVelocity! < 0) {
+                    // Swipe up
+                    setState(() {
+                      currentUserIndex = (currentUserIndex + 1) % users.length;
+                      currentImageIndex =
+                          0; // Reset image index when user changes
+                    });
+                  }
+                },
+                onHorizontalDragEnd: (details) {
+                  if (details.primaryVelocity! > 0) {
+                    // Swipe right
+                    setState(() {
+                      currentImageIndex = ((currentImageIndex! -
+                              1 +
+                              users[currentUserIndex]['images'].length) %
+                          users[currentUserIndex]['images'].length) as int?;
+                    });
+                  } else if (details.primaryVelocity! < 0) {
+                    // Swipe left
+                    setState(() {
+                      currentImageIndex = ((currentImageIndex! + 1) %
+                          users[currentUserIndex]['images'].length) as int?;
+                    });
+                  }
+                },
+                child: Stack(
+                  children: [
+                    Image.asset(
+                      users[currentUserIndex]['images'][currentImageIndex],
+                      fit: BoxFit.cover,
+                      height: double.infinity,
+                      width: double.infinity,
+                    ),
+                    Positioned(
+                      top: 20,
+                      left: 20,
+                      right: 20,
+                      child: Row(
+                        children: List.generate(
+                            users[currentUserIndex]['images'].length, (index) {
+                          return Expanded(
+                            child: Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 2.0),
+                              height: 4.0,
+                              decoration: BoxDecoration(
+                                color: index == currentImageIndex
+                                    ? Colors.white
+                                    : Colors.white.withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(2),
+                              ),
+                            ),
+                          );
+                        }),
+                      ),
+                    ),
+                    Positioned(
+                      top: 40,
+                      left: 20,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black54,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundImage: AssetImage(
+                                  users[currentUserIndex]['images']
+                                      [currentImageIndex]),
+                              radius: 20,
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              users[currentUserIndex]['username'],
+                              style: const TextStyle(
+                                fontSize: 18,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 40,
+                      right: 20,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black54,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.all(5.0),
+                            child: Icon(
+                              Icons.close,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   Widget _buildStoryCircle({
     required String profileImage,
     required String username,
@@ -186,7 +340,7 @@ class _MapaState extends State<Mapa> {
         Container(
           height: 70,
           width: 70,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             shape: BoxShape.circle,
             gradient: LinearGradient(
               colors: [Color(constants.GREEN), Color(constants.LIGHT_BLUE)],
