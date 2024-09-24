@@ -39,14 +39,12 @@ class _PostScreenState extends State<PostScreen> {
 
   Future<void> _pickImages() async {
     final ImagePicker picker = ImagePicker();
-    final List<XFile>? pickedImages = await picker.pickMultiImage();
+    final List<XFile> pickedImages = await picker.pickMultiImage();
 
-    if (pickedImages != null) {
-      setState(() {
-        _images = pickedImages.map((image) => File(image.path)).toList();
-      });
+    setState(() {
+      _images = pickedImages.map((image) => File(image.path)).toList();
+    });
     }
-  }
 
   Future<void> _handlePressButton() async {
     Prediction? p = await PlacesAutocomplete.show(
